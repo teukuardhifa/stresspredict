@@ -1,18 +1,17 @@
-# Gunakan image Python yang ringan
 FROM python:3.10-slim
 
-# Set working directory
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=5000
+
 WORKDIR /app
 
-# Salin requirements dan install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Salin semua file aplikasi ke dalam container
 COPY . .
 
-# Expose port yang akan digunakan (Railway akan override jika perlu)
 EXPOSE 5000
 
-# Jalankan aplikasi Flask
-CMD ["python", "app.py"]
+# gunakan gunicorn dan bind ke $PORT
+CMD ["sh", "-c", "gunicorn app:app -b 0.0.0.0:${PORT} --workers 2 --threads 2"]
