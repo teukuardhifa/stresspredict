@@ -1,0 +1,5 @@
+flask
+catboost
+scikit-learn
+pandas
+joblib
